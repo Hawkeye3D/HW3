@@ -6,10 +6,7 @@ import csv
 import sys
 import calendar
 import sys
- 
- 
-
-     
+   
 
  
 # def dfviewer(Df):
@@ -47,6 +44,7 @@ import sys
 #     print(df.memory_usage)
 #     print('_______________')
 #     return
+
 def MyMax(val,comp):
     if val >= comp:
        return val
@@ -77,18 +75,19 @@ with open(flocation,'r') as infile:
     if cnt>0:  
         if cnt==1:
             firstprofit = float(row[1])   #subtract this value from the average difference numerator 
-
+        #end if
         diff=(float(row[1])-lastprofit)
         maxprofit= MyMax(diff,maxprofit)
         minprofit= MyMin(diff,minprofit)
         sumdiff +=diff
         lastprofit=float(row[1])
-        total += lastprofit
-        
+        total += lastprofit         
     elif cnt==0:#skips header
         total=0
-    cnt+=1 #end of for loop 
-
+    #end if
+    cnt+=1 
+    #end of for loop 
+#End With
 cnt-=1 #over counted by 1, so backup
 
 OutDict["Tot_Profit_Loss"]=total
@@ -101,17 +100,23 @@ elif cnt==0:
 OutDict["GreatestInc"]=maxprofit
 OutDict["GreatestDec"]=minprofit   
 print(OutDict)
- 
-
-# df = pd.read_csv(flocation)  
+print()
+# Transposed  
+for item in OutDict:
+    print(item + ":" + OutDict(item)
+#    
+#Now, as a quick check using Pandas
+#I can duplicate most of the values, except for the
+#
+df = pd.read_csv(flocation)  
 # #df.columns = ["Date","Profit/Losses"]#,"change"]bash
 # dfviewer(df)
 
 # df['Date']=pd.to_datetime(df['Date'])
-# Total = df['Profit/Losses'].sum()
-# #lastrevenue = df['Profit/Losses']
-# mvalue = df['Profit/Losses'].max()
-# minvalue = df['Profit/Losses'].min()  
+Total = df['Profit/Losses'].sum()
+ #lastrevenue = df['Profit/Losses']
+mvalue = df['Profit/Losses'].max()
+minvalue = df['Profit/Losses'].min()  
  
-#print(mvalue, lsminvalue, Total)  # ,avgvalue,stdvalue)
+print(mvalue, lsminvalue, Total)  # ,avgvalue,stdvalue)
 #df.info()
