@@ -57,6 +57,18 @@ def MyMin(val,comp):
         return comp    
  
 flocation = 'budget_data.csv'#File moved to local directory instead of using os.path.join(...),which is problematic
+df = pd.read_csv(flocation)  
+# #df.columns = ["Date","Profit/Losses"]#,"change"]bash
+# dfviewer(df)
+
+# df['Date']=pd.to_datetime(df['Date'])
+Total = df['Profit/Losses'].sum()
+ #lastrevenue = df['Profit/Losses']
+mvalue = df['Profit/Losses'].max()
+minvalue = df['Profit/Losses'].min()  
+ 
+print(mvalue,minvalue, Total)  # ,avgvalue,stdvalue)
+
 #use a dictionary to carry the values for the output
 OutDict ={"Total_Months":-1,"Tot_Profit_Loss":0,"Average_Change":0,"GreatestInc":0,"GreatestDec":0}
 #Opens file for 'r'eading - safest technique for open and closing files as will always close even if there is an exception
@@ -96,27 +108,12 @@ if cnt>0:
   OutDict["Average_Change"]=(sumdiff-firstprofit)/cnt
 elif cnt==0:
   OutDict["Average_Change"]=0
-
+#end if
+#   
 OutDict["GreatestInc"]=maxprofit
 OutDict["GreatestDec"]=minprofit   
 print(OutDict)
 print()
-# Transposed  
-for item in OutDict:
-    print(item + ":" + OutDict(item)
-#    
-#Now, as a quick check using Pandas
-#I can duplicate most of the values, except for the
-#
-df = pd.read_csv(flocation)  
-# #df.columns = ["Date","Profit/Losses"]#,"change"]bash
-# dfviewer(df)
+# # Transposed  
 
-# df['Date']=pd.to_datetime(df['Date'])
-Total = df['Profit/Losses'].sum()
- #lastrevenue = df['Profit/Losses']
-mvalue = df['Profit/Losses'].max()
-minvalue = df['Profit/Losses'].min()  
- 
-print(mvalue, lsminvalue, Total)  # ,avgvalue,stdvalue)
-#df.info()
+    
