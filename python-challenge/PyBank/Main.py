@@ -56,7 +56,7 @@ def MyMin(val,comp):
     elif val>comp:
         return comp    
  
-flocation = 'budget_data.csv'#File moved to local directory instead of using os.path.join(...),which is problematic
+flocation = 'budget_data.csv' #File moved to local directory instead of using os.path.join(...),which is problematic
 df = pd.read_csv(flocation)  
 # #df.columns = ["Date","Profit/Losses"]#,"change"]bash
 # dfviewer(df)
@@ -83,7 +83,7 @@ with open(flocation,'r') as infile:
   sumdiff=0
   firstprofit=0
   for row in csvrows:
-    OutDict["Total_Months"]+=1
+    OutDict["Total_Months"]+=1 #method 1 of summarizing count
     if cnt>0:  
         if cnt==1:
             firstprofit = float(row[1])   #subtract this value from the average difference numerator 
@@ -97,11 +97,11 @@ with open(flocation,'r') as infile:
     elif cnt==0:#skips header
         total=0
     #end if
-    cnt+=1 
-    #end of for loop 
+    cnt+=1 #method 2 of summarizing count
+  #end of for loop 
 #End With
 cnt-=1 #over counted by 1, so backup
-
+ 
 OutDict["Tot_Profit_Loss"]=total
 #defend against dividing by zero
 if cnt>0:
@@ -114,6 +114,4 @@ OutDict["GreatestInc"]=maxprofit
 OutDict["GreatestDec"]=minprofit   
 print(OutDict)
 print()
-# # Transposed  
-
-    
+  
