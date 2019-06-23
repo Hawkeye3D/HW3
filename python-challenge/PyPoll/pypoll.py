@@ -6,9 +6,8 @@ import csv
 import sys
 import calendar
 import sys
-   
 
- 
+
 # def dfviewer(Df):
 #     print("Df.values: Return a Numpy representation of the DataFrame.")
 #     print(df.head(5))
@@ -45,55 +44,111 @@ import sys
 #     print('_______________')
 #     return
 
-def MyMax(val,comp):
+def MyMax(val, comp):
     if val >= comp:
-       return val
-    elif val<comp:
+        return val
+    elif val < comp:
         return comp
-def MyMin(val,comp):
+
+
+def MyMin(val, comp):
     if val <= comp:
-       return val
-    elif val>comp:
-        return comp    
-def SortCsvFile(inputname,sortcolumn,outputfilename):  
+        return val
+    elif val > comp:
+        return comp
+
+
+def SortCsvFile(inputname, sortcolumn, outputfilename):
     with open(inputname, 'r', newline='') as f_input:
         csv_input = csv.DictReader(f_input)
         data = sorted(csv_input, key=lambda row: (row[sortcolumn], row['X']))
 
-    with open(outputfilename, 'w', newline='') as f_output:    
+    with open(outputfilename, 'w', newline='') as f_output:
         csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
         csv_output.writeheader()
-        csv_output.writerows(data)        
- 
-flocation = 'election_data.csv' #File moved to local directory instead of using os.path.join(...),which is problematic
-#Using Panda
-#df = pd.read_csv(flocation)   
-#dfviewer(df)
+        csv_output.writerows(data)
+# this routine expects to have
 
-#SortCsvFile(flocation,'County','sortedbycount.csv')
-ElectionCount={} #Dictionary of Individual 
-#Opens file for 'r'eading - safest technique for open and closing files as will always close even if there is an exception
-#thereby not hanging the os and losing the file
-with open(flocation,'r') as infile:
-  csvrows = csv.reader(infile, delimiter=',')  
-  total=0
-  cnt=0
-  lastprofit=0
-  maxprofit =-99999999999
-  minprofit =9999999999
-  sumdiff=0
-  firstprofit=0
-  for row in csvrows:
-      if cnt>0:
-        if row[2] in ElectionCount:
-            ElectionCount[row[2]]+=1
-        else:
-            ElectionCount[row[2]]=1
-        #end IF 
-      #end if    
-      cnt+=1 #method 2 of summarizing count
-  #end of for loop 
-#End With
-cnt-=1 #over counted by 1, so backup
-print("Election count:" + str(cnt) )
-print(ElectionCount)
+
+def initCandiatesforCount(Canidates):
+    Ret = Canidates.copy()
+    for i in Ret:
+        i = 0
+    # end for
+    return Ret
+
+
+# File moved to local directory instead of using os.path.join(...),which is problematic
+flocation = 'election_data.csv'
+# Using Panda
+#df = pd.read_csv(flocation)
+# dfviewer(df)
+# SortCsvFile(flocation,'County','sortedbycount.csv')
+
+Canidatecount = {}  # Dictionary of Individual
+# Opens file for 'r'eading - safest technique for open and closing files as will always close even if there is an exception
+# thereby not hanging the os and losing the file
+with open(flocation, 'r') as infile:
+    csvrows = csv.reader(infile, delimiter=',')
+
+    cnt = 0
+
+    for row in csvrows:
+        if cnt > 0:
+            if row[2] in Canidatecount:  # syntax to see if the item is in the dictionary
+                Canidatecount[row[2]] += 1
+            else:
+                Canidatecount[row[2]] = 1
+            # end IF
+        # end if
+        cnt += 1  # method 2 of summarizing count
+    # end of for loop
+# End With
+cnt -= 1  # over counted by 1, so backup
+print("Election count:" + str(cnt))
+print
+print
+
+# This is a good way of transposing the output of the Dictionary into a
+# more readable format. Fiddling around with the format strings would
+# create a better looking table-like format, if desired.  I didn't desire it.
+
+for key, value in Canidatecount.items():
+    print(key + ": {:13d}".format(value) +
+          " -->>> Percentage of vote: {:.2f}".format(value/cnt*100) + "%")
+#
+#
+# OK, now By County,Canidate Since we already have all of the
+# canidates who have received votes in the state we will assign that empty list to
+# each county as they are identified.  So the dictionary for the county is {Countyname,{Canidate Dictionary}}
+cnt = 0
+Countycount = {}  # initialize the county dictionary
+with open(flocation, 'r') as infile:
+    csvrows = csv.reader(infile, delimiter=',')
+
+    cnt = 0
+
+    for row in csvrows:
+        if cnt > 0:
+            if row[1] in Countycount:  # syntax to see if the item is in the dictionary                
+               # temp={}
+                temp = Countycount[row[1]]
+                temp[row[2]]+=1
+                Countycount[row[1]] = temp #this should increment the proper
+            else: #new county, not in list needs to be added with a zeroed out Canidate list
+                virgincanidatelist = initCandiatesforCount(Canidatecount) #setup clean slate               
+                virgincanidatelist[row[2]]=1 #init first count for whoever is the first candiate on the first county
+                Countycount[row[1]] = virgincanidatelist #update the countycoun
+            # end IF
+        # end if
+        cnt += 1  # method 2 of summarizing count
+    # end of for loop
+# End With
+cnt -= 1  # over counted by 1, so backup
+print("County breakdown")
+print
+print(Countycount)  #!!!!!The output is not quite right, probalby not initalizing the dictionary properly
+# for key, value in Countycount.items():
+#     print(key + " County---------------------------")
+#     for key2, value2 in value:
+#         print(key2 + ": {:13d}".format(value2))     
