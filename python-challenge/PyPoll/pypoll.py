@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 from pandas import pivot_table, DataFrame, crosstab
 import numpy as np
@@ -8,7 +9,7 @@ import sys
 import calendar
 import sys
 import collections
-
+import generalfunctions #FINALLY works-barbaric case sensitivity!
 
 def MyMax(val, comp):
     if val >= comp:
@@ -124,7 +125,6 @@ for key, value in Countycount.items():
     #end for    
 #end for
 
-
 #
 #  NOW, fun with Pandas and Pivot Tables!
 #
@@ -136,7 +136,10 @@ for key, value in Countycount.items():
 df=pd.read_csv(flocation,delimiter=",") # where pd is the assigned name for my Pandas object
 Df_pv = (pivot_table(df,index=['Candidate'], columns=['County'], aggfunc=np.count_nonzero,margins=True,margins_name='Totals'))
 print(Df_pv)
-Df_pv.plot(kind='bar', stacked=True)
+#sans margin
+Df_pv2 = (pivot_table(df,index=['Candidate'], columns=['County'], aggfunc=np.count_nonzero))#,margins=True,margins_name='Totals'))
+Df_pv2.plot(kind='bar', stacked=True)
+Df_pv2.plot.show()
  #print(df.head(5)) #take a look at the heading
 print
 print(" --- PANDAMONIUM! --- Over 100 lines of looping code replaced by 5 lines of code(including the imports!) ")
