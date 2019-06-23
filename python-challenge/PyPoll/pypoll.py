@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas import pivot_table, DataFrame, crosstab
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -6,43 +7,8 @@ import csv
 import sys
 import calendar
 import sys
+import collections
 
-
-# def dfviewer(Df):
-#     print("Df.values: Return a Numpy representation of the DataFrame.")
-#     print(df.head(5))
-#     print('_______________')
-#     print("DF.index: The index (row labels) of the DataFrame.")
-#     print( (df.axes.index) )
-#     print('_______________')
-#     print("DF.axes: 	Return a list representing the axes of the DataFrame.")
-#     print( df.axes)
-#     print('_______________')
-#     print("DF.Ftypes: Return the ftypes (indication of sparse/dense and dtype) in DataFrame")
-#     print('Ftypes: '+ df.ftypes)
-#     print('_______________')
-#     print("Ftypes Count: Return counts of unique dtypes in this object.")
-#     print(df.get_dtype_counts())
-#     print('_______________')
-#     print("Df.ndim:  Return an int representing the number of axes / array dimensions.")
-#     print(df.ndim)
-#     print('_______________')
-#     print("Df.size:  Return an int representing the number of elements in this object.")
-#     print(df.size)
-#     print('_______________')
-#     print("Df.Shape:  Return a tuple representing the dimensionality of the DataFrame.")
-#     print(df.shape)
-#     print(df.shape.count)
-#     print(df.shape.index)
-#     print ('This is a tuple {0}'.format(df.shape))
-#     print('_______________')
-#     print("Df.empty:  Return an int representing the number of elements in this object.")
-#     print(df.empty)
-#     print('_______________')
-#     print("Df.memory_usage:  Return the memory usage of each column in bytes.")
-#     print(df.memory_usage)
-#     print('_______________')
-#     return
 
 def MyMax(val, comp):
     if val >= comp:
@@ -69,19 +35,17 @@ def SortCsvFile(inputname, sortcolumn, outputfilename):
         csv_output.writerows(data)
 # this routine expects to have
 
-
+# zeros out copy of the Canidates List
 def initCandiatesforCount(Canidates):
-    Ret = Canidates.copy()
-    for i in Ret:
-        i = 0
-    # end for
-    return Ret
+    ret = Canidates.copy
+    ret = {x: 0 for x in Canidates}
+    return ret
 
-
+ 
 # File moved to local directory instead of using os.path.join(...),which is problematic
 flocation = 'election_data.csv'
 # Using Panda
-#df = pd.read_csv(flocation)
+# df = pd.read_csv(flocation)
 # dfviewer(df)
 # SortCsvFile(flocation,'County','sortedbycount.csv')
 
@@ -126,19 +90,21 @@ Countycount = {}  # initialize the county dictionary
 with open(flocation, 'r') as infile:
     csvrows = csv.reader(infile, delimiter=',')
 
-    cnt = 0
+    cnt = 0 
 
     for row in csvrows:
         if cnt > 0:
-            if row[1] in Countycount:  # syntax to see if the item is in the dictionary                
+            if row[1] in Countycount:  # syntax to see if the item is in the dictionary
                # temp={}
                 temp = Countycount[row[1]]
-                temp[row[2]]+=1
-                Countycount[row[1]] = temp #this should increment the proper
-            else: #new county, not in list needs to be added with a zeroed out Canidate list
-                virgincanidatelist = initCandiatesforCount(Canidatecount) #setup clean slate               
-                virgincanidatelist[row[2]]=1 #init first count for whoever is the first candiate on the first county
-                Countycount[row[1]] = virgincanidatelist #update the countycoun
+                temp[row[2]] += 1
+                Countycount[row[1]] = temp  # this should increment the proper
+            else:  # new county, not in list needs to be added with a zeroed out Canidate list
+                virgincanidatelist = initCandiatesforCount(
+                    Canidatecount)  # setup clean slate                
+                # init first count for whoever is the first candiate on the first county
+                virgincanidatelist[row[2]]+=1
+                Countycount[row[1]] = virgincanidatelist 
             # end IF
         # end if
         cnt += 1  # method 2 of summarizing count
@@ -147,8 +113,30 @@ with open(flocation, 'r') as infile:
 cnt -= 1  # over counted by 1, so backup
 print("County breakdown")
 print
-print(Countycount)  #!!!!!The output is not quite right, probalby not initalizing the dictionary properly
-# for key, value in Countycount.items():
-#     print(key + " County---------------------------")
-#     for key2, value2 in value:
-#         print(key2 + ": {:13d}".format(value2))     
+# !!!!!The output is not pretty but is squares with the previous summary, 
+# so now we know how many people voted for each canidate in each county!!
+# AND THE RUSSIANS WERE NOT INVOLVED
+print(Countycount)
+for key, value in Countycount.items():
+    print(key + " County---------------------------")
+    for key2, value2 in value.items():
+        print(key2 + ": {:13d}".format(value2))
+    #end for    
+#end for
+
+
+#
+#  NOW, fun with Pandas and Pivot Tables!
+#
+#First, get a dataframe from the CSV File
+#Note: The following was enabled by the following imports
+# import pandas as pd
+# from pandas import pivot_table, DataFrame, crosstab
+# import numpy as np
+df=pd.read_csv(flocation,delimiter=",") # where pd is the assigned name for my Pandas object
+Df_pv = (pivot_table(df,index=['Candidate'], columns=['County'], aggfunc=np.count_nonzero,margins=True,margins_name='Totals'))
+print(Df_pv)
+Df_pv.plot(kind='bar', stacked=True)
+ #print(df.head(5)) #take a look at the heading
+print
+print(" --- PANDAMONIUM! --- Over 100 lines of looping code replaced by 5 lines of code(including the imports!) ")
