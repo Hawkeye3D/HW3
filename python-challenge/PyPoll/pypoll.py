@@ -35,7 +35,13 @@ def SortCsvFile(inputname, sortcolumn, outputfilename):
         csv_output.writeheader()
         csv_output.writerows(data)
 # this routine expects to have
-
+def writedicttofile(outputfilename,inputname):
+       with open(inputname, 'r', newline='') as f_input:
+        csv_input = csv.DictReader(f_input)
+        with open(outputfilename, 'w', newline='') as f_output:
+            csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
+            csv_output.writeheader()
+            csv_output.writerows()
 # zeros out copy of the Canidates List
 def initCandiatesforCount(Canidates):
     ret = Canidates.copy
