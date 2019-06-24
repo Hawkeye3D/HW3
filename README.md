@@ -1,7 +1,7 @@
 # HW3
 [PyBank Code](pybank-code)
 ## Homework for Week3 - Rice Data Analytics
-### PyBank Code
+### PyBank Code ###
 The main thing I did here was create a couple of helper definitions for Min and Max.  I generally find that easier than looking for the optimum way of doing it with native functions, unless speed is the issue.
 The code is as code is as follows:
 
@@ -77,7 +77,7 @@ OutDict["GreatestDec"]=minprofit
 print(OutDict)
 print()
 ```
-## PyPoll Code
+### PyPoll Code ###
 
 This was the most fun to work on, simply because it is a very long set of records and I thought it was going to be really slow with Python code, but it really wasn't, so that was a nice surprise.  Still slow, but not painfully.  Anyway, the base problem was to count the number of counts for each candidate.  I did it with the following code:
 ```python
@@ -177,7 +177,7 @@ print
 print(" --- PANDAMONIUM! --- Over 100 lines of looping code replaced by 5 lines of code(including the imports!) ")
 ```
 
-## PyBoss Code
+### PyBoss Code ###
 ```python
 flocation = 'employee_data.csv'
 
