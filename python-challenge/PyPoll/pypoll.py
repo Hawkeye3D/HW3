@@ -50,7 +50,7 @@ def initCandiatesforCount(Canidates):
 
  
 # File moved to local directory instead of using os.path.join(...),which is problematic
-flocation = 'election_data.csv'
+flocation = 'employee_data.csv'
 # Using Panda
 # df = pd.read_csv(flocation)
 # dfviewer(df)
