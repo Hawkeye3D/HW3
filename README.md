@@ -1,5 +1,7 @@
 # HW3
-[PyBank Code](pybank-code)
+[PyBank Code](#pybank-code)
+[PyPoll Code](#pypoll-code)
+[PyBoss Code](#pyboss-code)
 ## Homework for Week3 - Rice Data Analytics
 ### PyBank Code ###
 The main thing I did here was create a couple of helper definitions for Min and Max.  I generally find that easier than looking for the optimum way of doing it with native functions, unless speed is the issue.
