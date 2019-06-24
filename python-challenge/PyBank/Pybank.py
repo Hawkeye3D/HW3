@@ -9,7 +9,7 @@ import sys
    
 
  
-# def dfviewer(Df):
+# def dfviewer(df):
 #     print("Df.values: Return a Numpy representation of the DataFrame.")
 #     print(df.head(5))
 #     print('_______________')
