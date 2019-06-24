@@ -176,3 +176,51 @@ print
 print(" --- PANDAMONIUM! --- Over 100 lines of looping code replaced by 5 lines of code(including the imports!) ")
 ```
 
+##PyBoss Code
+```python
+flocation = 'employee_data.csv'
+
+
+EmployeeList = []  # Dictionary of Individual
+NewEmployeeList = []
+# Opens file for 'r'eading - safest technique for open and closing files as will always close even if there is an exception
+# thereby not hanging the os and losing the file
+with open(flocation, 'r') as infile:
+    csv_input = csv.reader(infile, delimiter=',')
+    EmployeeList = list(csv_input)
+    #NewEmployeelist = EmployeeList[:]  # creates a duplicate of Employeelist   not used in this case since I need to insert a column
+    #and there does not seem to be an elegant way of doing it - tried comprehension but it kept crashing.
+    rowcnt = 0
+    for i in EmployeeList:        
+        #Append will append a single item to the list, in this case I am
+        #appending a modified row list as indicated by the brackets.
+        #if I used parenthesis I would be creating a tuple, except in that
+        #case I can't modify any of the elements, which is a problem in this case
+        NewEmployeeList.append([i[0],'First Name', i[1], i[2], i[3],i[4]])
+    for row in NewEmployeeList:
+        if rowcnt==0:
+            row[2]="Last Name"
+            print(row)
+            rowcnt+=1
+            continue #continue on with the loop
+        words = row[2].split(  )  #make a list of the whitespace separated items
+        if len(words) > 1: # I did't complete for the idea that a name would have less than two names
+            row[1] = words[1] #first name
+            row[2] = words[0] #redefine the name, renamed to Last name, that the parsed last name
+            ds=row[3].split("-")#split on the hyphen
+            row[3]=ds[1]+"/"+ds[2]+"/"+ds[0] # glue the split back in a different order
+            row[4] = "***-**-" + right(row[4],4) # used a def for slice the right 4 characters
+            #I tried doing all of this strState in one line by Python kept barfing on me, so I 
+            #broke it up into more manageable pieces
+            strState=row[5]
+            strState=strState.lower()
+            strState=strState.title()            
+            strState=us_state_abbrev[strState]
+            row[5] = strState
+            print(row)
+            rowcnt+=1
+print('-')
+print('-')
+print("There are " + str(rowcnt-1) + " employees registered in this file at the moment")
+```
+The comments in the code explain this one. I tried a couple of approaches on this before I settled on this solution.  I also made the problem a bit more complex than it needed to be my thinking that dates should be treated as date-types and that obfuscated passwords and social security numbers should have some type of cryptography, but I didn't go too far down those rabbit holes.  The most interest code here is the .APPEND in line 199.  Append can append one object, be it a string, a number or a list. If you want to edit the items in the list,then make sure it is not a tuple.  I fiddled with that problem for a bit.
