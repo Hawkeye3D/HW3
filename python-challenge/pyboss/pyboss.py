@@ -128,4 +128,6 @@ with open(flocation, 'r') as infile:
             row[5] = strState
             print(row)
             rowcnt+=1
-print("There are " + str(rowcnt-1) + " employees registered in this file")            
+print('-')
+print('-')
+print("There are " + str(rowcnt-1) + " employees registered in this file at the moment")            
