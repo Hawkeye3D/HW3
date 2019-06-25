@@ -112,7 +112,7 @@ with open(flocation, 'r') as infile:
             print(row)
             rowcnt+=1
             continue #continue on with the loop
-        words = row[2].split()  #make a list of the whitespace separated items
+        words = row[2].split(  )  #make a list of the whitespace separated items
         if len(words) > 1: # I did't complete for the idea that a name would have less than two names
             row[1] = words[1] #first name
             row[2] = words[0] #redefine the name, renamed to Last name, that the parsed last name
@@ -130,4 +130,4 @@ with open(flocation, 'r') as infile:
             rowcnt+=1
 print('-')
 print('-')
-print("There are " + str(rowcnt-1) + " employees registered in this file at the moment")            
+print("There are " + str(rowcnt-1) + " employees registered in this file at the moment")          

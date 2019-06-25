@@ -35,13 +35,13 @@ def SortCsvFile(inputname, sortcolumn, outputfilename):
         csv_output.writeheader()
         csv_output.writerows(data)
 # this routine expects to have
-def writedicttofile(outputfilename,inputname):
-       with open(inputname, 'r', newline='') as f_input:
-        csv_input = csv.DictReader(f_input)
-        with open(outputfilename, 'w', newline='') as f_output:
-            csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
-            csv_output.writeheader()
-            csv_output.writerows()
+# def writedicttofile(outputfilename,inputname):
+#        with open(inputname, 'r', newline='') as f_input:
+#         csv_input = csv.DictReader(f_input)
+#         with open(outputfilename, 'w', newline='') as f_output:
+#             csv_output = csv.DictWriter(f_output, fieldnames=csv_input.fieldnames)
+#             csv_output.writeheader()
+#             csv_output.writerows()
 # zeros out copy of the Canidates List
 def initCandiatesforCount(Canidates):
     ret = Canidates.copy
@@ -75,6 +75,8 @@ with open(flocation, 'r') as infile:
         cnt += 1  # method 2 of summarizing count
     # end of for loop
 # End With
+
+
 cnt -= 1  # over counted by 1, so backup
 print("Election count:" + str(cnt))
 print
@@ -87,6 +89,8 @@ print
 for key, value in Canidatecount.items():
     print(key + ": {:13d}".format(value) +
           " -->>> Percentage of vote: {:.2f}".format(value/cnt*100) + "%")
+
+
 #
 #
 # OK, now By County,Canidate Since we already have all of the
@@ -120,6 +124,8 @@ with open(flocation, 'r') as infile:
 cnt -= 1  # over counted by 1, so backup
 print("County breakdown")
 print
+
+
 # !!!!!The output is not pretty but is squares with the previous summary, 
 # so now we know how many people voted for each canidate in each county!!
 # AND THE RUSSIANS WERE NOT INVOLVED
