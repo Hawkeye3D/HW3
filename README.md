@@ -2,6 +2,7 @@
 [PyBank Code](#pybank-code)
 [PyPoll Code](#pypoll-code)
 [PyBoss Code](#pyboss-code)
+[PyParagraph Code](#pyparagraph-code)
 ## Homework for Week3 - Rice Data Analytics
 ### PyBank Code ###
 The main thing I did here was create a couple of helper definitions for Min and Max.  I generally find that easier than looking for the optimum way of doing it with native functions, unless speed is the issue.
@@ -227,3 +228,55 @@ print('-')
 print("There are " + str(rowcnt-1) + " employees registered in this file at the moment")
 ```
 The comments in the code explain this one. I tried a couple of approaches on this before I settled on this solution.  I also made the problem a bit more complex than it needed to be my thinking that dates should be treated as date-types and that obfuscated passwords and social security numbers should have some type of cryptography, but I didn't go too far down those rabbit holes.  The most interest code here is the .APPEND in line 199.  Append can append one object, be it a string, a number or a list. If you want to edit the items in the list,then make sure it is not a tuple.  I fiddled with that problem for a bit.
+## PyParagraph Code
+The interesting thing about this project is that it has imprecise answers, one is better than the other.  I did not run through the whole thing, but I took a look at it and did some testing.  The test code I did is below:
+```python
+import csv
+import os
+import re  #regular Expressions 
+#For Testing Purposes
+def gettextfile(name):
+    with open(name,'r') as infile:
+        Paragraph = infile.read()        
+        return Paragraph # pass it back for whatever
+
+filename1 = "paragraph_1.txt"
+filename2 = "paragraph_2.txt"
+#filename1 = os.path.join("..","raw_data","paragraph_1.txt")  #this technique NEVER works for me!!
+#filename2 = os.path.join("..","raw_data","paragraph_2.txt")
+#print(filename1)
+#print(filename2)
+Paratext1 =(gettextfile(filename1))
+Paratext2 = (gettextfile(filename2))
+print("EXAMPLE ONE")
+print(Paratext1)
+Sentencecnt = Paratext1.split(".")
+sentRE = re.split("(?<=[.!?]) +", Paratext1)
+print(len(Sentencecnt))
+print(len(sentRE))
+print("EXAMPLE TWO")
+print(Paratext2)
+Sentencecnt = Paratext2.split(".")
+sentRE = re.split("(?<=[.!?]) +", Paratext2)
+print(len(Sentencecnt))
+print(len(sentRE))
+#Well, the little test I ran above truly points out the problem with RE!
+#in the first paragraph there are 6 periods, no question marks and no !
+#Python split command sees them all.
+#RE apparently ignores the last one and reports only 6.
+#The second paragraph is even worse, RE sees 2 of 12, but in fact there are only 11 sentences.
+#Python counts an abbreviation; an exception to the logic.
+
+#conclusion, use Python.  Someone,once said of Regular Expressions, "If you have a problem and you decide to use RE to help solve that problem, all you have accomplished is that you now have TWO problems."
+#I whole-heartedly agree with that sentiment, not that they can't be made to work, but they are so sytax sensitive, that they would tax anyone's temper. It is generally a waste of time to try and craft a perfect
+#RE solution if one is not already at hand. (Of which there are many, but even finding that can take some time.)
+
+#One of the lessons to be learned with this exercise is that logic needs to be tested against different data sets.
+#Also, sometimes the best that one can do is get an approximate solution to a complex problem.  In this case the 
+#complex problem is parsing written human language.
+
+#I won't bother going through with the rest of the exercise, it is a matter of setting up a loop to 
+#split sentences into words (whitespace splitting -- default split behavior), then report the word count for each sentence, and then to a length of each
+#word and divide by the number of words for an average.  If I were interested in this problem I would do further analysis by counting prepositions and subtractings them from the word
+#count, so as to get an better idea of just how large the words are that are being used to describe the ideas.
+```
